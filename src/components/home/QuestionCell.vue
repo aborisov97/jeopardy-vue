@@ -1,26 +1,56 @@
 <template>
-    <div>
-        CELL = {{toEmit}}
-        <input type="text" v-model="toEmit">
-        <button v-on:click="emitData">Emit</button>
-        {{question}}
-    </div>
+    <span 
+        v-on:click="emitData"
+        class="question" 
+        v-bind:class="{disabled: question.answer === 'answered', active: question.answer !== 'answered'}">
+        {{question.value}}</span>
 </template>
 
 <script>
 export default {
     props: {
-        question: String
-    },
-    data() {
-        return {
-            toEmit: ''
-        }
+        question: Object
     },
     methods: {
         emitData() {
-            this.$emit('questionEvent', this.toEmit)
+            this.$emit('clickedCell', true)
         }
     }
 }
 </script>
+
+
+<style scoped>
+span {
+  color: yellow;
+}
+
+.active {
+  text-decoration: none;
+  -webkit-transition: color .25s linear;
+  transition: color .25s linear;
+  transition: background-color .15s linear .1;
+}
+
+.active:hover {
+  text-decoration: none;
+  color: black;
+  background-color: #dbbf1d;
+  -webkit-transition: color .25s linear, background-color .15s linear .1s;
+  transition: color .25s linear, background-color .15s linear .1s;
+}
+
+.question {
+  border: 8px solid black;
+  border-radius: 28px;
+  text-align: center;
+  font-size: 40px;
+  padding: 0.77rem;
+}
+
+.disabled {
+  pointer-events: none;
+  background-color: grey;
+}
+
+</style>

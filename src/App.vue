@@ -45,4 +45,11 @@ export default {
   width: 90%;
   margin: 0 auto;
 }
+
+#app {
+  background-color: #eeeeeec9;
+  margin: 0;
+  padding: 0;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 </style>
