@@ -34,6 +34,8 @@ export default {
 </script>
 
 <style>
+@import "./assets/primeflex.css";
+
 .navbar {
   z-index: 500;
   background-color: #bfdbf8;
