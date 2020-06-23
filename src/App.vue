@@ -1,28 +1,46 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+    <nav class="navbar navbar-light">
+      <img src="./assets/logo.png" style="width: 50px;">
+      <img src="./assets/jeopardy.png" style="width: 150px;">
+      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse collapse" id="navbarsExample01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <router-link class="nav-link" to="/home">Home</router-link>
+          </li>
+          <li class="nav-item active">
+            <router-link class="nav-link" to="/about">About</router-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    
+    <div class="wrapper">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: {}
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.navbar {
+  z-index: 500;
+  background-color: #bfdbf8;
+}
+
+.wrapper {
+  width: 90%;
+  margin: 0 auto;
 }
 </style>
