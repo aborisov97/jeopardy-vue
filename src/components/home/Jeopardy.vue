@@ -1,14 +1,16 @@
 <template>
 <div>
-    <table class="table">
+    <table class="table" v-if="!isSelectedQuestion && round !== 3">
         <tr v-for="(row, id) of rows" :key="id">
             <template v-for="(question, index) of questions">
                 <td v-if="index <= row && index >= row - 3"  :key="index">
-                    <QuestionCell :question="question" @clicked="showQuestionWindow($event)"></QuestionCell>
+                    <QuestionCell :question="question" @clickedCell="showQuestionWindow($event)"></QuestionCell>
                 </td>
             </template>
         </tr>
     </table>
+
+    <QuestionWindow v-if="isSelectedQuestion" :selectedQuestion="selectedQuestion" @questionAnswered="calculatePoints($event)"></QuestionWindow>
 
 
     <div class="centeredField">
@@ -19,11 +21,11 @@
                 <p class="playerListItem" :key="idx">{{player.playerNumber}}: {{player.score}}</p>
             </template>
 
-            <span>
-                <h1>Der Gewinner ist Spieler {{winner}}!</h1>
-                <button class="btn btn-danger">PLAY AGAIN</button>
-                <p class="text-danger">END OF ROUND</p>
-                <button class="btn btn-info">NEXT ROUND</button>
+            <span v-if="endRound">
+                <h1 v-if="endGame" >Der Gewinner ist Spieler {{winner}}!</h1>
+                <button v-if="endGame" class="btn btn-danger" @click="refresh()">PLAY AGAIN</button>
+                <p v-if="round !== 3" class="text-danger">END OF ROUND</p>
+                <button v-if="round !== 3" class="btn btn-info" @click="nextRound()">NEXT ROUND</button>
             </span>
         </div>
     </div>
@@ -33,6 +35,7 @@
 
 <script>
 import QuestionCell from './QuestionCell.vue'
+import QuestionWindow from './QuestionWindow.vue'
 
 export default {
     name: 'jeopardy',
@@ -43,8 +46,12 @@ export default {
         return {
           rows: [3, 7, 11, 15],
           round: 1,
+          endRound: false,
+          endGame: false,
           currentPlayer: undefined,
-          winner: undefined
+          winner: undefined,
+          selectedQuestion: {},
+          isSelectedQuestion: false
         }
     },
     computed: {
@@ -53,6 +60,8 @@ export default {
             for (let i = 0 ; i < Number(this.playerCount) ; i++) {
                 result.push({playerNumber: `Spieler ${i + 1}`, score: 0, myTurn: i === 0 ? true : false, winner: false})
             }
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.currentPlayer = result[0].playerNumber
             return result
         },
         questions: function () {
@@ -76,11 +85,59 @@ export default {
         }
     },
     components: {
-        QuestionCell
+        QuestionCell,
+        QuestionWindow
     },
     methods: {
-        showQuestionWindow(event) {
-            console.log('showQuestionWindow -> ', event);
+        showQuestionWindow(question) {
+            this.selectedQuestion = question;
+            this.isSelectedQuestion = true;
+        },
+        calculatePoints(event) {
+            for (let i = 0 ; i < this.players.length ; i++) {
+              if (this.players[i].myTurn) {
+                this.players[i].score += event;
+                this.players[i].myTurn = false;
+                 if (i === this.players.length - 1) {
+                  this.players[0].myTurn = true;
+                  this.currentPlayer = this.players[0].playerNumber;
+                 } else {
+                  this.players[i + 1].myTurn = true;
+                  this.currentPlayer = this.players[i + 1].playerNumber;
+                 }
+                this.selectedQuestion.answer = 'answered';
+                break;
+              }
+            }
+            this.isSelectedQuestion = false;
+            this.checkForRoundEnd();
+        },
+        checkForRoundEnd() {
+          this.endRound = true;
+          this.questions.forEach(question => {
+            if (question.answer !== 'answered') {
+                this.endRound = false;
+            }
+          });
+        },
+        nextRound() {
+            if (this.round !== 3) {
+             this.round++;
+            }
+            if (this.round === 2) {
+             this.loadRoundTwoQuestions();
+            } else {
+             this.loadFinalJeopardy();
+            }
+        },
+        loadRoundTwoQuestions() {
+            console.log('round 2');
+        },
+        loadFinalJeopardy() {
+            console.log('round 3');
+        },
+        refresh() {
+            window.location.reload();
         }
     }
 }

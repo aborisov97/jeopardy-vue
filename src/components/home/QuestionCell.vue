@@ -1,6 +1,6 @@
 <template>
     <span 
-        v-on:click="emitData"
+        v-on:click="emitData(question)"
         class="question" 
         v-bind:class="{disabled: question.answer === 'answered', active: question.answer !== 'answered'}">
         {{question.value}}</span>
@@ -12,8 +12,8 @@ export default {
         question: Object
     },
     methods: {
-        emitData() {
-            this.$emit('clickedCell', true)
+        emitData(question) {
+            this.$emit('clickedCell', question)
         }
     }
 }
