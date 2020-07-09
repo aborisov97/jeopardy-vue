@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <span class="countDownClass">
         {{ countDown }}
-    </div>
+    </span>
 </template>
 
 <script>
@@ -28,3 +28,11 @@
         }
     }
 </script>
+
+<style scoped>
+.countDownClass {
+    font-size: 5rem;
+    color: aliceblue;
+    display: block;
+}
+</style>
