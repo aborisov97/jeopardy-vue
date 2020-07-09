@@ -9,7 +9,7 @@
         </div>
         <button v-if="windowIsActive" class="btn btn-info" @click="submitAnswer()">Einreichen</button>
 
-        <!-- <countdown *ngIf="windowIsActive" id="id3" #cd [config]="{leftTime: 10, format: 's'}" (event)="$event.action=='done' ? windowIsActive = false : ''"></countdown> -->
+        <Countdown v-if="windowIsActive" @timeIsOut="windowIsActive = false"></Countdown>
 
         <hr>
         <div v-if="!windowIsActive" class="right-answer">
@@ -21,7 +21,12 @@
 </template>
 
 <script>
+import Countdown from './Countdown.vue'
+
 export default {
+    components: {
+        Countdown
+    },
     props: {
         'selectedQuestion': Object
     },
