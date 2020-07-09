@@ -12,6 +12,8 @@
 
     <QuestionWindow v-if="isSelectedQuestion" :selectedQuestion="selectedQuestion" @questionAnswered="calculatePoints($event)"></QuestionWindow>
 
+    <FinalJeopardyWindow v-if="round === 3" :finalQuestion="questions[0]" :players="players"
+        @finalQuestionAnswered="ENDGAME($event)"></FinalJeopardyWindow>
 
     <div class="centeredField">
             <p class="currentRoundName">{{ round === 1 ? 'Jeopardy!' : round === 2 ? 'Double Jeopardy!' : 'Final Jeopardy!' }}</p>
@@ -20,6 +22,8 @@
             <template v-for="(player, idx) of players">
                 <p class="playerListItem" :key="idx">{{player.playerNumber}}: {{player.score}}</p>
             </template>
+
+            <button v-if="round !== 3" class="btn btn-info" @click="nextRound()">NEXT ROUND</button>
 
             <span v-if="endRound">
                 <h1 v-if="endGame" >Der Gewinner ist Spieler {{winner}}!</h1>
@@ -36,6 +40,7 @@
 <script>
 import QuestionCell from './QuestionCell.vue'
 import QuestionWindow from './QuestionWindow.vue'
+import FinalJeopardyWindow from './FinalJeopardyWindow.vue'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -64,7 +69,7 @@ export default {
                 this.$bind('questions', questionsDB.where('category', '==', selectedQuestionCategory).where('round', '==', 'Jeopardy!'))
             },
         },
-        round: {
+        roundString: {
             handler(round) {
                 this.$bind('questions', questionsDB.where('category', '==', this.selectedQuestionCategory).where('round', '==', round))
             }
@@ -74,6 +79,7 @@ export default {
         return {
           rows: [3, 7, 11, 15],
           round: 1,
+          roundString: 'Jeopardy',
           endRound: false,
           endGame: false,
           currentPlayer: undefined,
@@ -81,6 +87,7 @@ export default {
           selectedQuestion: {},
           isSelectedQuestion: false,
           questions: []
+          // add players
         }
     },
     created() {
@@ -100,7 +107,8 @@ export default {
     },
     components: {
         QuestionCell,
-        QuestionWindow
+        QuestionWindow,
+        FinalJeopardyWindow
     },
     methods: {
         showQuestionWindow(question) {
@@ -135,24 +143,46 @@ export default {
           });
         },
         nextRound() {
+            console.log(this.round);
             if (this.round !== 3) {
              this.round++;
+            console.log('incremented - ', this.round);
             }
             if (this.round === 2) {
              this.loadRoundTwoQuestions();
             } else {
+            console.log('round -> ', this.round);
              this.loadFinalJeopardy();
             }
             this.endRound = false;
         },
         loadRoundTwoQuestions() {
-            this.round = 'Double Jeopardy!'
+            this.roundString = 'Double Jeopardy!'
         },
         loadFinalJeopardy() {
-            console.log('round 3');
+            this.roundString = 'Final Jeopardy!'
         },
         refresh() {
             window.location.reload();
+        },     
+        ENDGAME(event) {
+            for (let i = 0 ; i < this.players.length ; i++) {
+              if (event[i].correct) {
+                this.players[i].score += Number(this.questions[0].value) + event[i].wager ? Number(event[i].wager) : 0;
+              } else {
+                this.players[i].score -= Number(event[i].wager) ? Number(event[i].wager) : 0;
+              }
+            }
+            let maxScore = this.players[0].score;
+            this.winner = 1;
+            for (let i = 0 ; i < this.players.length ; i++) {
+              if (this.players[i].score > maxScore) {
+                maxScore = this.players[i].score;
+                this.winner = i + 1;
+              }
+            }
+            this.endRound = true;
+            this.endGame = true;
         }
     }
 }
