@@ -7,9 +7,9 @@
             <div style="text-align: left; margin-bottom: 1rem;"><QuestionSelection></QuestionSelection></div>
             <div style="text-align: left;">
             <button class="btn btn-primary"
-             :disabled="!(validPlayerNumber && validQuestionCategory)"
+             v-if="!startedGame"
              v-on:click="startGame">SPIEL STARTEN</button>
-            <p v-if="!(validPlayerNumber && validQuestionCategory)" class="text-danger">Geben Sie bitte alle Felden an!</p>
+            <p v-if="fillAllFields" class="text-danger">Geben Sie bitte alle Felden an!</p>
             </div>
         </div>
         <div class="p-col-8" style="text-align: right;">
@@ -35,7 +35,8 @@ export default {
             validQuestionCategory: false,
             startedGame: false,
             playerCount: Number,
-            questionCategory: String
+            questionCategory: String,
+            fillAllFields: false
         }
     },
     created() {
@@ -52,7 +53,13 @@ export default {
     },
     methods: {
         startGame() {
-            this.startedGame = true;
+            if (this.validPlayerNumber && this.validQuestionCategory) {
+                this.startedGame = true
+                this.fillAllFields = false
+            }
+            else {
+                this.fillAllFields = true
+            } 
         }
     }
 }

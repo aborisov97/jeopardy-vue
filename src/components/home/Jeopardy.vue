@@ -23,6 +23,7 @@
                 <p class="playerListItem" :key="idx">{{player.playerNumber}}: {{player.score}}</p>
             </template>
 
+            ONLY FOR TESTING
             <button v-if="round !== 3" class="btn btn-info" @click="nextRound()">NEXT ROUND</button>
 
             <span v-if="endRound">
@@ -87,12 +88,7 @@ export default {
           selectedQuestion: {},
           isSelectedQuestion: false,
           questions: []
-          // add players
         }
-    },
-    created() {
-        console.log(this.questions);
-        console.log(this.selectedQuestionCategory);
     },
     computed: {
         players: function () {
@@ -143,15 +139,12 @@ export default {
           });
         },
         nextRound() {
-            console.log(this.round);
             if (this.round !== 3) {
              this.round++;
-            console.log('incremented - ', this.round);
             }
             if (this.round === 2) {
              this.loadRoundTwoQuestions();
             } else {
-            console.log('round -> ', this.round);
              this.loadFinalJeopardy();
             }
             this.endRound = false;
