@@ -4,9 +4,12 @@ import App from './App.vue'
 import { routes } from './routes.js'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { firestorePlugin } from 'vuefire'
+
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+Vue.use(firestorePlugin)
 
 const router = new VueRouter({
   routes

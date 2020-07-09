@@ -36,12 +36,39 @@
 <script>
 import QuestionCell from './QuestionCell.vue'
 import QuestionWindow from './QuestionWindow.vue'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+
+const db = firebase.initializeApp(
+    {
+         apiKey: 'AIzaSyD0bbDR0F8YoafRuZkGgbVYF1xlhi29N8o',
+    authDomain: 'diplom-ar.firebaseapp.com',
+    databaseURL: 'https://diplom-ar.firebaseio.com',
+    projectId: 'diplom-ar',
+    storageBucket: 'diplom-ar.appspot.com',
+    messagingSenderId: '320932284587'
+    }).firestore()
+
+const questionsDB = db.collection('questions');
 
 export default {
     name: 'jeopardy',
     props: {
         'playerCount': String,
         'selectedQuestionCategory': String
+    },
+    watch: {
+        selectedQuestionCategory: {
+            immediate: true,
+            handler(selectedQuestionCategory) {
+                this.$bind('questions', questionsDB.where('category', '==', selectedQuestionCategory).where('round', '==', 'Jeopardy!'))
+            },
+        },
+        round: {
+            handler(round) {
+                this.$bind('questions', questionsDB.where('category', '==', this.selectedQuestionCategory).where('round', '==', round))
+            }
+        }
     },
     data() {
         return {
@@ -53,7 +80,12 @@ export default {
           winner: undefined,
           selectedQuestion: {},
           isSelectedQuestion: false,
+          questions: []
         }
+    },
+    created() {
+        console.log(this.questions);
+        console.log(this.selectedQuestionCategory);
     },
     computed: {
         players: function () {
@@ -65,25 +97,6 @@ export default {
             this.currentPlayer = result[0].playerNumber
             return result
         },
-        questions: function () {
-            return [
-{question: "Wie heißt die Hauptstadt von Deutschland",answer: "München",value: 100},
-{question: "In welchem Teil Europas befindet sich Deutschland_",answer: "Central Europa",value: 100},
-{question: "Wie viel mal hat DE die Fußballweltmeisterschaft gewonnen?",answer: "3",value: 100},
-{question: "Wie viel mal hat DE die Fußballweltmeisterschaft gewonnen?",answer: "3",value: 100},
-{question: "Wie viel mal hat DE die Fußballweltmeisterschaft gewonnen?",answer: "3",value: 200},
-{question: "Wie viel mal hat DE die Fußballweltmeisterschaft gewonnen?",answer: "3",value: 200},
-{question: "Wie viel mal hat DE die Fußballweltmeisterschaft gewonnen?",answer: "3",value: 200},
-{question: "Wie viele Einwohner hat Deutschland?",answer: "82 Mio",value: 200},
-{question: "Wie viele Einwohner hat Deutschland?",answer: "82 Mio",value: 300},
-{question: "Wie viele Einwohner hat Deutschland?",answer: "82 Mio",value: 300},
-{question: "Wie viele Einwohner hat Deutschland?",answer: "82 Mio",value: 300},
-{question: "123131", answer: "sandaime",value: 300},
-{question: "Welche ist die größte Insel Deutschlands?",answer: "Rügen",value: 400},
-{question: "Welche ist die größte Insel Deutschlands?",answer: "Rügen",value: 400},
-{question: "Welche ist die größte Insel Deutschlands?",answer: "Rügen",value: 400},
-{question: "Welche ist die größte Insel Deutschlands?",answer: "Rügen",value: 400}]
-        }
     },
     components: {
         QuestionCell,
@@ -130,9 +143,10 @@ export default {
             } else {
              this.loadFinalJeopardy();
             }
+            this.endRound = false;
         },
         loadRoundTwoQuestions() {
-            console.log('round 2');
+            this.round = 'Double Jeopardy!'
         },
         loadFinalJeopardy() {
             console.log('round 3');
