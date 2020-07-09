@@ -7,13 +7,13 @@
             <div style="text-align: left; margin-bottom: 1rem;"><QuestionSelection></QuestionSelection></div>
             <div style="text-align: left;">
             <button class="btn btn-primary"
-             v-bind:class="{ disabled: !(validPlayerNumber && validQuestionCategory) }"
+             :disabled="!(validPlayerNumber && validQuestionCategory)"
              v-on:click="startGame">SPIEL STARTEN</button>
             <p v-if="!(validPlayerNumber && validQuestionCategory)" class="text-danger">Geben Sie bitte alle Felden an!</p>
             </div>
         </div>
         <div class="p-col-8" style="text-align: right;">
-            <Jeopardy v-if="startedGame" :playerCount="playerCount"></Jeopardy>
+            <Jeopardy v-if="startedGame" :selectedQuestionCategory="questionCategory" :playerCount="playerCount"></Jeopardy>
         </div>
         </div>
 
@@ -34,17 +34,19 @@ export default {
             validPlayerNumber: false,
             validQuestionCategory: false,
             startedGame: false,
-            playerCount: Number
+            playerCount: Number,
+            questionCategory: String
         }
     },
     created() {
         eventBus.$on('playerSelection', data => {
             this.validPlayerNumber = true
-            this.playerCount = data;
+            this.playerCount = data
             console.log('arrived => ', data)
         })
         eventBus.$on('questionSelection', data => {
             this.validQuestionCategory = true
+            this.questionCategory = data
             console.log('arrived => ', data)
         })
     },

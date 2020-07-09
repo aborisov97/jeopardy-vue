@@ -40,7 +40,8 @@ import QuestionWindow from './QuestionWindow.vue'
 export default {
     name: 'jeopardy',
     props: {
-        'playerCount': String
+        'playerCount': String,
+        'selectedQuestionCategory': String
     },
     data() {
         return {
@@ -51,7 +52,7 @@ export default {
           currentPlayer: undefined,
           winner: undefined,
           selectedQuestion: {},
-          isSelectedQuestion: false
+          isSelectedQuestion: false,
         }
     },
     computed: {

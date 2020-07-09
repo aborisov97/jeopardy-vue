@@ -22,7 +22,6 @@ export default {
             this.selectedQuestion = question
             console.log(question);
             eventBus.$emit('questionSelection', this.selectedQuestion)
-
         }
     }
 }
