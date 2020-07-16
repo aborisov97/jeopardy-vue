@@ -4,17 +4,17 @@
     <nav class="navbar navbar-light">
       <img src="./assets/logo.png" style="width: 50px;">
       <img src="./assets/jeopardy.png" style="width: 150px;">
-      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+      <button id="toggleNavbar" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="navbar-collapse collapse" id="navbarsExample01">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <router-link class="nav-link" to="/home">Home</router-link>
+            <router-link id="homeLink" class="nav-link" to="/home">Home</router-link>
           </li>
           <li class="nav-item active">
-            <router-link class="nav-link" to="/about">About</router-link>
+            <router-link id="aboutLink" class="nav-link" to="/about">About</router-link>
           </li>
         </ul>
       </div>
