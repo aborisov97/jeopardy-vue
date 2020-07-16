@@ -3,7 +3,7 @@
     <table class="table" v-if="!isSelectedQuestion && round !== 3">
         <tr v-for="(row, id) of rows" :key="id">
             <template v-for="(question, index) of questions">
-                <td v-if="index <= row && index >= row - 3"  :key="index">
+                <td :id="'questionCell'+ (index + 1)" v-if="index <= row && index >= row - 3"  :key="index">
                     <QuestionCell :question="question" @clickedCell="showQuestionWindow($event)"></QuestionCell>
                 </td>
             </template>
@@ -20,7 +20,7 @@
             <p class="currentPlayerParagraph">Aktueller Spieler: <span v-if="currentPlayer" style="color: saddlebrown;">{{ currentPlayer }}</span></p>
         <div>
             <template v-for="(player, idx) of players">
-                <p class="playerListItem" :key="idx">{{player.playerNumber}}: {{player.score}}</p>
+                <p :id="'playerListItem' + (idx + 1)" class="playerListItem" :key="idx">{{player.playerNumber}}: {{player.score}}</p>
             </template>
 
             ONLY FOR TESTING

@@ -1,9 +1,9 @@
 <template>
     <div class="component-container">
         <label for="playerNumber">Teilnehemernummer:</label>
-        <input type="number" class="form-control" v-model="players" style="margin-bottom: 0.5rem;">
+        <input id="playerNumberInput" type="number" class="form-control" v-model="players" style="margin-bottom: 0.5rem;">
         <span v-if="showError"><p class="text-danger">Inkorektes Nummer</p></span>
-        <button class="btn btn-primary" v-on:click="submitPlayers" style="float: right;">Einreichen</button>
+        <button id="playerNumberButton" class="btn btn-primary" v-on:click="submitPlayers" style="float: right;">Einreichen</button>
         <div style="clear: both;"></div>
     </div>
 </template>

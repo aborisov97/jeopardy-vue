@@ -2,7 +2,7 @@
     <div class="component-container">
         <p>Kategorie: {{selectedQuestion}}</p>
         <ul>
-            <li v-for="question of questions" :key="question" v-on:click="submitQuestionCategory(question)" class="question-list-item">{{question}}</li>
+            <li v-for="(question, index) of questions" :key="index" :id="'questionCategory'+ (index + 1)" v-on:click="submitQuestionCategory(question)" class="question-list-item">{{question}}</li>
         </ul>
     </div>
 </template>

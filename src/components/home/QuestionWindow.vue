@@ -5,9 +5,9 @@
         </div>
 
         <div class="answer">
-            <input type="text" class="form-control" v-model="answer">
+            <input id="answerInput" type="text" class="form-control" v-model="answer">
         </div>
-        <button v-if="windowIsActive" class="btn btn-info" @click="submitAnswer()">Einreichen</button>
+        <button id="answerSubmitButton" v-if="windowIsActive" class="btn btn-info" @click="submitAnswer()">Einreichen</button>
 
         <Countdown v-if="windowIsActive" @timeIsOut="windowIsActive = false"></Countdown>
 
@@ -15,7 +15,7 @@
         <div v-if="!windowIsActive" class="right-answer">
             Richtige Antwort:
             {{ selectedQuestion.answer }}
-            <button class="btn btn-info" @click="back()">Zurück</button>
+            <button id="backButton" class="btn btn-info" @click="back()">Zurück</button>
         </div>
     </div>
 </template>

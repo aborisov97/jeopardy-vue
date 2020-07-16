@@ -7,13 +7,14 @@
             <div style="text-align: left; margin-bottom: 1rem;"><QuestionSelection></QuestionSelection></div>
             <div style="text-align: left;">
             <button class="btn btn-primary"
+            id="startGameButton"
              v-if="!startedGame"
              v-on:click="startGame">SPIEL STARTEN</button>
             <p v-if="fillAllFields" class="text-danger">Geben Sie bitte alle Felden an!</p>
             </div>
         </div>
         <div class="p-col-8" style="text-align: right;">
-            <Jeopardy v-if="startedGame" :selectedQuestionCategory="questionCategory" :playerCount="playerCount"></Jeopardy>
+            <Jeopardy id="jeopardyWindow" v-if="startedGame" :selectedQuestionCategory="questionCategory" :playerCount="playerCount"></Jeopardy>
         </div>
         </div>
 
