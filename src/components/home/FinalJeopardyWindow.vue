@@ -6,13 +6,13 @@
   </div>
 
   <div class="answer">
-    <input type="password" class="form-control" v-model="currentPlayerAnswer">
+    <input id="finalInput" type="password" class="form-control" v-model="currentPlayerAnswer">
     <div class="wager">Spieler {{playerCount}}</div>
     <div class="wager">Wette: {{wagerAmount}}</div>
     <input type="range" max="1000" v-model="wagerAmount">
   </div>
-  <button class="btn btn-info stayAway" @click="submitPlayerAnswer()">Einreichen</button>
-  <button v-bind:class="playersLength > 0 ? 'disabled' : ''" class="btn btn-info" @click="back()">Finale</button>
+  <button id="finalSubmit" class="btn btn-info stayAway" @click="submitPlayerAnswer()">Einreichen</button>
+  <button id="finale" v-bind:class="playersLength > 0 ? 'disabled' : ''" class="btn btn-info" @click="back()">Finale</button>
 </div>
 
 </template>

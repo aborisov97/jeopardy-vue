@@ -30,7 +30,7 @@
                 <h1 v-if="endGame" >Der Gewinner ist Spieler {{winner}}!</h1>
                 <button v-if="endGame" class="btn btn-danger" @click="refresh()">PLAY AGAIN</button>
                 <p v-if="round !== 3" class="text-danger">END OF ROUND</p>
-                <button v-if="round !== 3" class="btn btn-info" @click="nextRound()">NEXT ROUND</button>
+                <button v-if="round !== 3" id="nexRoundButton" class="btn btn-info" @click="nextRound()">NEXT ROUND</button>
             </span>
         </div>
     </div>
